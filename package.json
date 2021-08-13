@@ -1,0 +1,26 @@
+{
+  "name": "questions-and-answers-api",
+  "version": "1.0.0",
+  "description": "Questions and answers API for Atelier backend.",
+  "main": "mongoose-schema.js",
+  "scripts": {
+    "start": "nodemon server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Winter/questions-and-answers-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-Winter/questions-and-answers-api/issues"
+  },
+  "homepage": "https://github.com/Team-Winter/questions-and-answers-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.12",
+    "pg": "^8.7.1"
+  }
+}
