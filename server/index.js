@@ -40,7 +40,7 @@ app.get('/qa/questions', async (req, res) => {
       ) answer
     ) answers
     FROM questions AS q
-    WHERE q.product_id=$1
+    WHERE product_id=$1 AND reported=false
     OFFSET $2 ROWS
     FETCH FIRST $3 ROWS ONLY`;
     const results = await client.query(query, [product_id, offset, count]);
