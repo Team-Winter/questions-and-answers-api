@@ -5,30 +5,30 @@
 -- then: 'psql questions_and_answers'
 -- then: '\i schema.sql'
 
-DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS questions CASCADE;
 
 CREATE TABLE questions (
-  id              serial primary key,
-  body            text                  not null,
-  date            bigint                not null,
+  question_id              serial primary key,
+  question_body            text                  not null,
+  question_date            bigint                not null,
   asker_name      text                  not null,
   asker_email     text                  not null,
-  helpfulness     integer               not null default 0,
+  question_helpfulness     integer               not null default 0,
   reported        boolean               not null default false,
   product_id      integer               not null
 );
 
-COPY questions (id, product_id, body, date, asker_name, asker_email, reported, helpfulness)
+COPY questions (question_id, product_id, question_body, question_date, asker_name, asker_email, reported, question_helpfulness)
 FROM '/Users/jordanabbasi/HR/questions-and-answers-api/questions.csv'
 DELIMITER ','
 CSV
 HEADER;
 
-DROP TABLE IF EXISTS answers;
+DROP TABLE IF EXISTS answers CASCADE;
 
 CREATE TABLE answers (
   id                 serial primary key,
-  question_id        integer references questions    not null,
+  question_id        integer references questions(question_id)    not null,
   body               text                            not null,
   date               bigint                          not null,
   answerer_name      text                            not null,
@@ -56,3 +56,8 @@ FROM '/Users/jordanabbasi/HR/questions-and-answers-api/answers_photos.csv'
 DELIMITER ','
 CSV
 HEADER;
+
+-- try with and without indices:
+-- CREATE INDEX idx_questions_product_id ON questions(product_id);
+-- CREATE INDEX idx_answers_question_id ON answers(question_id);
+-- CREATE INDEX idx_photos_answer_id ON photos(answer_id);
