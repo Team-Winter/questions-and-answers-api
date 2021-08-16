@@ -96,6 +96,55 @@ app.get('/qa/questions/:question_id/answers', async (req, res) => {
   }
 })
 
+app.post('/qa/questions', async (req, res) => {
+  const { body, name, email, product_id } = req.body;
+  const date = Date.now();
+  let client;
+  try {
+    client = await pool.connect();
+    const query = `
+    INSERT INTO questions (question_body, asker_name, asker_email, product_id, question_date)
+    VALUES ($1, $2, $3, $4, $5)`;
+    const results = await client.query(query, [body, name, email, product_id, date]);
+    res.status(200).send('Created');
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  } finally {
+    client.release();
+  }
+})
+
+app.post('/qa/questions/:question_id/answers', async (req, res) => {
+  const { question_id } = req.params;
+  let { body, name, email, photos } = req.body;
+  photos = photos || [];
+  const date = Date.now();
+  let client;
+  try {
+    client = await pool.connect();
+    let query = `
+      INSERT INTO answers (body, answerer_name, answerer_email, question_id, date)
+      VALUES ($1, $2, $3, $4, $5)`;
+    if (photos && photos.length) {
+      query = `WITH inserted_id AS (
+       ${query}
+       RETURNING id
+      )
+      INSERT INTO photos (answer_id, url) VALUES
+      ${photos.map((_, i) => `((SELECT id FROM inserted_id), $${i + 6})`).join(', ')}
+    `;
+    }
+    const results = await client.query(query, [body, name, email, question_id, date, ...photos]);
+    res.status(200).send('Created');
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  } finally {
+    client.release();
+  }
+})
+
 app.listen(port, () => {
-  console.log(`Express server listening on port: ${port}`);
+  console.log(`Express server listening on port: ${port} `);
 });

@@ -57,6 +57,11 @@ DELIMITER ','
 CSV
 HEADER;
 
+-- reset serial sequence after import!
+SELECT pg_catalog.setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(question_id) FROM questions));
+SELECT pg_catalog.setval(pg_get_serial_sequence('answers', 'id'), (SELECT MAX(id) FROM answers));
+SELECT pg_catalog.setval(pg_get_serial_sequence('photos', 'id'), (SELECT MAX(id) FROM photos));
+
 -- try with and without indices:
 -- CREATE INDEX idx_questions_product_id ON questions(product_id);
 -- CREATE INDEX idx_answers_question_id ON answers(question_id);
