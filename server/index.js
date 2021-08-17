@@ -36,7 +36,7 @@ app.get('/qa/questions', async (req, res) => {
           WHERE answer_id = answers.id
         ) photos
         FROM answers
-        WHERE question_id = q.question_id
+        WHERE question_id = q.question_id AND reported = false
       ) answer
     ) answers
     FROM questions AS q
@@ -94,7 +94,7 @@ app.get('/qa/questions/:question_id/answers', async (req, res) => {
   } finally {
     client.release();
   }
-})
+});
 
 app.post('/qa/questions', async (req, res) => {
   const { body, name, email, product_id } = req.body;
@@ -113,7 +113,7 @@ app.post('/qa/questions', async (req, res) => {
   } finally {
     client.release();
   }
-})
+});
 
 app.post('/qa/questions/:question_id/answers', async (req, res) => {
   const { question_id } = req.params;
@@ -143,7 +143,87 @@ app.post('/qa/questions/:question_id/answers', async (req, res) => {
   } finally {
     client.release();
   }
-})
+});
+
+app.put('/qa/questions/:question_id/helpful', async (req, res) => {
+  const { question_id } = req.params;
+  let client;
+  try {
+    client = await pool.connect();
+    let query = `
+      UPDATE questions
+      SET question_helpfulness = question_helpfulness + 1
+      WHERE question_id = $1
+    `;
+    const results = await client.query(query, [question_id]);
+    res.status(204).send();
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  } finally {
+    client.release();
+  }
+});
+
+app.put('/qa/questions/:question_id/report', async (req, res) => {
+  const { question_id } = req.params;
+  let client;
+  try {
+    client = await pool.connect();
+    let query = `
+      UPDATE questions
+      SET reported = true
+      WHERE question_id = $1
+    `;
+    const results = await client.query(query, [question_id]);
+    res.status(204).send();
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  } finally {
+    client.release();
+  }
+});
+
+app.put('/qa/answers/:answer_id/helpful', async (req, res) => {
+  const { answer_id } = req.params;
+  let client;
+  try {
+    client = await pool.connect();
+    let query = `
+      UPDATE answers
+      SET helpfulness = helpfulness + 1
+      WHERE id = $1
+    `;
+    const results = await client.query(query, [answer_id]);
+    res.status(204).send();
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  } finally {
+    client.release();
+  }
+});
+
+app.put('/qa/answers/:answer_id/report', async (req, res) => {
+  const { answer_id } = req.params;
+  let client;
+  try {
+    client = await pool.connect();
+    let query = `
+      UPDATE answers
+      SET reported = true
+      WHERE id = $1
+    `;
+    const results = await client.query(query, [answer_id]);
+    res.status(204).send();
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  } finally {
+    client.release();
+  }
+});
 
 app.listen(port, () => {
   console.log(`Express server listening on port: ${port} `);
