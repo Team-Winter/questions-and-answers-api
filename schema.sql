@@ -63,6 +63,6 @@ SELECT pg_catalog.setval(pg_get_serial_sequence('answers', 'id'), (SELECT MAX(id
 SELECT pg_catalog.setval(pg_get_serial_sequence('photos', 'id'), (SELECT MAX(id) FROM photos));
 
 -- try with and without indices:
--- CREATE INDEX idx_questions_product_id ON questions(product_id);
--- CREATE INDEX idx_answers_question_id ON answers(question_id);
--- CREATE INDEX idx_photos_answer_id ON photos(answer_id);
+CREATE INDEX idx_questions_product_id ON questions(product_id);
+CREATE INDEX idx_answers_question_id ON answers(question_id);
+CREATE INDEX idx_photos_answer_id ON photos(answer_id);
