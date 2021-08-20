@@ -3,3 +3,5 @@ node_modules
 
 server/example.sql
 server/index-copy.js
+
+AWS.pem
