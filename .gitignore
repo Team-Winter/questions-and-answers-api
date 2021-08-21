@@ -5,3 +5,4 @@ server/example.sql
 server/index-copy.js
 
 HR_SDC.pem
+server/loaderio-token/*.txt
