@@ -19,7 +19,8 @@ CREATE TABLE questions (
 );
 
 COPY questions (question_id, product_id, question_body, question_date, asker_name, asker_email, reported, question_helpfulness)
-FROM '/Users/jordanabbasi/HR/questions-and-answers-api/questions.csv'
+FROM 'home/Ubuntu/questions.csv'
+-- FROM '/Users/jordanabbasi/HR/questions-and-answers-api/questions.csv'
 DELIMITER ','
 CSV
 HEADER;
@@ -38,7 +39,8 @@ CREATE TABLE answers (
 );
 
 COPY answers
-FROM '/Users/jordanabbasi/HR/questions-and-answers-api/answers.csv'
+FROM 'home/Ubuntu/answers.csv'
+-- FROM '/Users/jordanabbasi/HR/questions-and-answers-api/answers.csv'
 DELIMITER ','
 CSV
 HEADER;
@@ -52,7 +54,8 @@ CREATE TABLE photos (
 );
 
 COPY photos
-FROM '/Users/jordanabbasi/HR/questions-and-answers-api/answers_photos.csv'
+FROM '/home/Ubuntu/answers_photos.csv'
+-- FROM '/Users/jordanabbasi/HR/questions-and-answers-api/answers_photos.csv'
 DELIMITER ','
 CSV
 HEADER;
