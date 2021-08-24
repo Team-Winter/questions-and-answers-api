@@ -1,12 +1,12 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  // host: 'localhost', // for local
-  host: '35.167.129.43', // for EC2
-  // user: 'jordanabbasi', // for local
-  user: 'ubuntu', // for EC2
-  password: 'ubuntu', // for EC2
-  database: 'qa',
+  host: 'localhost', // for local
+  // host: '35.167.129.43', // for EC2
+  user: 'jordanabbasi', // for local
+  // user: 'ubuntu', // for EC2
+  // password: 'ubuntu', // for EC2
+  database: 'questions_and_answers',
 });
 
 const answers = {};
